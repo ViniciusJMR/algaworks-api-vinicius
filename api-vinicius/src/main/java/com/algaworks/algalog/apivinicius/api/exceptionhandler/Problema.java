@@ -1,5 +1,6 @@
 package com.algaworks.algalog.apivinicius.api.exceptionhandler;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,6 +18,7 @@ public class Problema {
     private String titulo;
     private List<Campo> campos;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     @AllArgsConstructor
     @Getter
     @Setter

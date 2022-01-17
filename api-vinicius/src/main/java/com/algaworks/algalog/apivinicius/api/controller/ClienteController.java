@@ -2,6 +2,7 @@ package com.algaworks.algalog.apivinicius.api.controller;
 
 import com.algaworks.algalog.apivinicius.domain.model.Cliente;
 import com.algaworks.algalog.apivinicius.domain.repository.ClienteRepository;
+import com.algaworks.algalog.apivinicius.domain.service.CatalogoClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,8 @@ public class ClienteController {
 
     @Autowired
     private ClienteRepository clienteRepository;
+    @Autowired
+    private CatalogoClienteService clienteService;
 
     @GetMapping
     public List<Cliente> listar(){
@@ -44,7 +47,7 @@ public class ClienteController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Cliente criar(@Valid @RequestBody Cliente cliente){
-        return clienteRepository.save(cliente);
+        return clienteService.salvar(cliente);
     }
 
     @PutMapping("/{clienteId}")
@@ -52,14 +55,14 @@ public class ClienteController {
         if (!clienteRepository.existsById(clienteId))
             return ResponseEntity.notFound().build();
         cliente.setId(clienteId);
-        return ResponseEntity.ok(clienteRepository.save(cliente));
+        return ResponseEntity.ok(clienteService.salvar(cliente));
     }
 
     @DeleteMapping("/{clienteId}")
     public ResponseEntity<Void> excluir(@PathVariable Long clienteId){
         if (!clienteRepository.existsById(clienteId))
             return ResponseEntity.notFound().build();
-        clienteRepository.deleteById(clienteId);
+        clienteService.excluir(clienteId);
 
         return ResponseEntity.noContent().build();
     }
