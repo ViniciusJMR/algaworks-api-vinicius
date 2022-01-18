@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 @Service
 public class SolicitacaoEntregaService {
@@ -24,7 +25,7 @@ public class SolicitacaoEntregaService {
     public Entrega solicitar(Entrega entrega){
         Cliente cliente = clienteService.buscar(entrega.getCliente().getId());
         entrega.setStatus(StatusEntrega.PENDENTE);
-        entrega.setDataPedido(LocalDateTime.now());
+        entrega.setDataPedido(OffsetDateTime.now());
         entrega.setCliente(cliente);
         return entregaRepo.save(entrega);
     }

@@ -17,6 +17,7 @@ import org.springframework.web.servlet.LocaleContextResolver;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,7 +38,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         }
 
         Problema problema = new Problema(status.value(),
-                LocalDateTime.now(),
+                OffsetDateTime.now(),
                 "Um ou mais campos estão inválidos",
                 campos);
         return this.handleExceptionInternal(ex, problema,headers, status, request);
@@ -47,7 +48,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleNegocio(NegocioException ex, WebRequest request){
         HttpStatus status =HttpStatus.BAD_REQUEST;
         Problema problema = new Problema(status.value(),
-                LocalDateTime.now(),
+                OffsetDateTime.now(),
                 ex.getMessage(),
                 null);
         return handleExceptionInternal(ex,problema,new HttpHeaders(), status, request);
