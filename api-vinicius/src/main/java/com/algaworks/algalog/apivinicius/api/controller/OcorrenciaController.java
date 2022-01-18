@@ -39,4 +39,5 @@ public class OcorrenciaController {
 
        return ocorrenciaAssembler.toCollectionModel(entrega.getOcorrencias());
     }
+
 }

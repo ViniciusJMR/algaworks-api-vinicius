@@ -5,6 +5,7 @@ import com.algaworks.algalog.apivinicius.api.input.EntregaInput;
 import com.algaworks.algalog.apivinicius.api.model.EntregaModel;
 import com.algaworks.algalog.apivinicius.domain.model.Entrega;
 import com.algaworks.algalog.apivinicius.domain.repository.EntregaRepository;
+import com.algaworks.algalog.apivinicius.domain.service.FinalizacaoEntregaService;
 import com.algaworks.algalog.apivinicius.domain.service.SolicitacaoEntregaService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -27,9 +28,8 @@ public class EntregaController {
     private EntregaRepository entregaRepo;
     @Autowired
     private EntregaAssembler entregaAssembler;
-
-    public EntregaController() {
-    }
+    @Autowired
+    private FinalizacaoEntregaService finalizacaoEntregaService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -48,5 +48,11 @@ public class EntregaController {
                 .map(entrega -> {
                     return ResponseEntity.ok(entregaAssembler.toModel(entrega));
                 }).orElse(ResponseEntity.notFound().build());
+    }
+
+    @PutMapping("/{entregaId}/finalizacao")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void finalizar(@PathVariable Long entregaId){
+        finalizacaoEntregaService.finalizar(entregaId);
     }
 }
