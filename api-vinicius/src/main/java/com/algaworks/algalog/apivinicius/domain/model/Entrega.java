@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import javax.validation.Valid;
@@ -14,6 +15,8 @@ import javax.validation.groups.Default;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Getter
@@ -40,4 +43,17 @@ public class Entrega {
 
     private OffsetDateTime dataFinalizacao;
 
+    @OneToMany(mappedBy = "entrega", cascade = CascadeType.ALL)
+    private List<Ocorrencia> ocorrencias = new ArrayList<>();
+
+    public Ocorrencia addOcorrencia(String descricao) {
+        Ocorrencia ocorrencia = new Ocorrencia();
+        ocorrencia.setDescricao(descricao);
+        ocorrencia.setDataRegistro(OffsetDateTime.now());
+        ocorrencia.setEntrega(this);
+
+        this.getOcorrencias().add(ocorrencia);
+
+        return ocorrencia;
+    }
 }

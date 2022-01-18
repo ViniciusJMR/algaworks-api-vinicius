@@ -1,5 +1,6 @@
 package com.algaworks.algalog.apivinicius.api.exceptionhandler;
 
+import com.algaworks.algalog.apivinicius.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algalog.apivinicius.domain.exception.NegocioException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -47,6 +48,16 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(NegocioException.class)
     public ResponseEntity<Object> handleNegocio(NegocioException ex, WebRequest request){
         HttpStatus status =HttpStatus.BAD_REQUEST;
+        Problema problema = new Problema(status.value(),
+                OffsetDateTime.now(),
+                ex.getMessage(),
+                null);
+        return handleExceptionInternal(ex,problema,new HttpHeaders(), status, request);
+
+    }
+    @ExceptionHandler(EntidadeNaoEncontradaException.class)
+    public ResponseEntity<Object> handleEntidadeNaoEncontrada(NegocioException ex, WebRequest request){
+        HttpStatus status =HttpStatus.NOT_FOUND;
         Problema problema = new Problema(status.value(),
                 OffsetDateTime.now(),
                 ex.getMessage(),
